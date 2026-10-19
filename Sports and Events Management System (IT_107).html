@@ -1,0 +1,1491 @@
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sports Tournament Management System</title>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;}
+body {
+    background: #f4f7fb;
+    color: #1e293b;}
+.auth-screen {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #12372a, #1f8a5b);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5000;}
+.auth-screen.hidden {
+    display: none;}
+.auth-box {
+    width: 420px;
+    max-width: 92%;
+    background: white;
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0,0,0,.2);}
+.auth-logo {
+    text-align: center;
+    margin-bottom: 25px;}
+.auth-logo .logo {
+    font-size: 50px;}
+.auth-logo h1 {
+    font-size: 22px;
+    color: #12372a;
+    margin-top: 8px;}
+.auth-logo p {
+    color: #64748b;
+    font-size: 13px;
+    margin-top: 5px;}
+.auth-tabs {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #e2e8f0;}
+.auth-tabs button {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #64748b;}
+.auth-tabs button.active {
+    color: #1f8a5b;
+    border-bottom: 3px solid #1f8a5b;}
+.auth-form {
+    display: none;}
+.auth-form.active {
+    display: block;}
+.form-group {
+    margin-bottom: 15px;}
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 7px;}
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    outline: none;}
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #1f8a5b;}
+.auth-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 7px;
+    background: #1f8a5b;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 5px;}
+.auth-btn:hover {
+    background: #176b46;}
+.demo-info {
+    margin-top: 18px;
+    padding: 12px;
+    background: #f0fdf4;
+    border-radius: 7px;
+    color: #166534;
+    font-size: 12px;
+    text-align: center;}
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 240px;
+    height: 100vh;
+    background: #12372a;
+    color: white;
+    padding: 20px;
+    overflow-y: auto;}
+.brand {
+    text-align: center;
+    margin-bottom: 25px;}
+.brand .icon {
+    font-size: 38px;}
+.brand h2 {
+    margin-top: 5px;
+    font-size: 18px;}
+.brand p {
+    color: #b8d8c8;
+    font-size: 11px;
+    margin-top: 5px;}
+.menu-title {
+    color: #91b8a4;
+    font-size: 11px;
+    margin: 18px 0 8px;
+    text-transform: uppercase;}
+.sidebar button {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: #d9e8df;
+    padding: 12px;
+    margin-bottom: 4px;
+    border-radius: 7px;
+    cursor: pointer;
+    text-align: left;
+    font-size: 14px;}
+.sidebar button:hover,
+.sidebar button.active {
+    background: #1f8a5b;
+    color: white;}
+.main {
+    margin-left: 240px;
+    min-height: 100vh;}
+.topbar {
+    height: 70px;
+    background: white;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;}
+.topbar h1 {
+    font-size: 22px;}
+.user {
+    display: flex;
+    align-items: center;
+    gap: 10px;}
+.profile-container {
+    position: relative;}
+.profile-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 6px 8px;
+    border-radius: 8px;}
+.profile-button:hover {
+    background: #f1f5f9;}
+.profile-info {
+    text-align: left;}
+.profile-info strong {
+    display: block;
+    color: #1e293b;
+    font-size: 14px;}
+.profile-info small {
+    display: block;
+    color: #64748b;
+    font-size: 11px;
+    margin-top: 2px;}
+.profile-arrow {
+    color: #64748b;
+    font-size: 10px;}
+.avatar {
+    width: 38px;
+    height: 38px;
+    background: #1f8a5b;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;}
+.profile-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 55px;
+    width: 270px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.15);
+    padding: 8px;
+    z-index: 4000;}
+.profile-menu.show {
+    display: block;}
+.profile-menu-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    border-bottom: 1px solid #e2e8f0;
+    margin-bottom: 6px;}
+.profile-avatar {
+    width: 42px;
+    height: 42px;
+    background: #1f8a5b;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;}
+.profile-menu-header strong {
+    display: block;
+    font-size: 14px;}
+.profile-menu-header small {
+    display: block;
+    color: #64748b;
+    font-size: 11px;
+    margin-top: 3px;}
+.profile-menu > button {
+    width: 100%;
+    border: none;
+    background: transparent;
+    padding: 11px 12px;
+    text-align: left;
+    border-radius: 7px;
+    cursor: pointer;
+    color: #334155;
+    font-size: 13px;}
+.profile-menu > button:hover {
+    background: #f1f5f9;}
+.profile-divider {
+    height: 1px;
+    background: #e2e8f0;
+    margin: 6px 0;}
+.profile-menu > .profile-logout {
+    color: #dc2626;}
+.profile-menu > .profile-logout:hover {
+    background: #fef2f2;}
+.content {
+    padding: 30px;}
+.page {
+    display: none;}
+.page.active {
+    display: block;}
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;}
+.page-header p {
+    color: #64748b;
+    margin-top: 5px;
+    font-size: 13px;}
+.btn {
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;}
+.btn:hover {
+    opacity: .85;}
+.green {
+    background: #1f8a5b;
+    color: white;}
+.blue {
+    background: #2563eb;
+    color: white;}
+.red {
+    background: #dc2626;
+    color: white;}
+.gray {
+    background: #e2e8f0;
+    color: #334155;}
+.small {
+    padding: 6px 9px;
+    font-size: 11px;}
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 22px;}
+.card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 20px;}
+.card p {
+    color: #64748b;
+    font-size: 13px;
+    margin-bottom: 10px;}
+.card h2 {
+    font-size: 30px;}
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;}
+.box {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    overflow: hidden;}
+.box-header {
+    padding: 16px 18px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;}
+.box-header h3 {
+    font-size: 16px;}
+.box-body {
+    padding: 18px;}
+.table-container {
+    overflow-x: auto;}
+table {
+    width: 100%;
+    border-collapse: collapse;}
+th,
+td {
+    padding: 13px;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+    font-size: 13px;}
+th {
+    background: #f8fafc;
+    color: #64748b;}
+.badge {
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    display: inline-block;}
+.badge-green {
+    background: #dcfce7;
+    color: #166534;}
+.badge-blue {
+    background: #dbeafe;
+    color: #1d4ed8;}
+.badge-orange {
+    background: #ffedd5;
+    color: #c2410c;}
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 18px;}
+.search {
+    width: 300px;
+    max-width: 100%;
+    padding: 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    outline: none;}
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;}
+.quick-actions button {
+    padding: 14px;
+    border: 1px solid #dbe4ec;
+    background: #f8fafc;
+    border-radius: 7px;
+    cursor: pointer;
+    text-align: left;}
+.quick-actions button:hover {
+    background: #e9f7f0;
+    border-color: #1f8a5b;}
+.announcement {
+    padding: 14px 0;
+    border-bottom: 1px solid #e2e8f0;}
+.announcement:last-child {
+    border-bottom: none;}
+.announcement h4 {
+    margin-bottom: 5px;}
+.announcement p {
+    color: #64748b;
+    font-size: 13px;}
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 3000;}
+.modal.show {
+    display: flex;}
+.modal-box {
+    background: white;
+    width: 480px;
+    max-width: 100%;
+    border-radius: 12px;
+    padding: 25px;}
+.modal-title {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;}
+.close {
+    border: none;
+    background: transparent;
+    font-size: 25px;
+    cursor: pointer;}
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;}
+@media(max-width: 1000px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+@media(max-width: 650px) {
+
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
+    .main {
+        margin-left: 0;
+    }
+    .cards {
+        grid-template-columns: 1fr;
+    }
+    .page-header,
+    .toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .topbar {
+        padding: 15px;
+    }
+    .content {
+        padding: 15px;
+    }
+    .profile-info,
+    .profile-arrow {
+        display: none;
+    }
+    .profile-menu {
+        right: -5px;
+        width: 240px;
+    }
+}
+</style>
+</head>
+<body>
+<div class="auth-screen" id="authScreen">
+    <div class="auth-box">
+        <div class="auth-logo">
+            <div class="logo">🏆</div>
+            <h1>Sports Tournament</h1>
+            <p>Management System</p>
+        </div>
+        <div class="auth-tabs">
+            <button id="loginTab"class="active"onclick="showAuthForm('login')">Login</button>
+            <button id="signupTab"onclick="showAuthForm('signup')">Sign Up</button>
+        </div>
+        <form id="loginForm"class="auth-form active"onsubmit="login(event)">
+        <div class="form-group">
+<label>Email</label>
+            <input type="email"id="loginEmail"placeholder="Enter your email"required>
+        </div>
+        <div class="form-group">
+<label>Password</label>
+            <input type="password"id="loginPassword"placeholder="Enter your password"required>
+        </div>
+            <button type="submit"class="auth-btn">Login</button>
+        <div class="demo-info">
+                Demo Account:<br>
+                <strong>admin@sports.com</strong><br>
+                Password: <strong>admin123</strong>
+        </div>
+        </form>
+        <form id="signupForm"class="auth-form"onsubmit="signup(event)">
+        <div class="form-group">
+<label>Full Name</label>
+            <input type="text"id="signupName"placeholder="Enter your full name"required>
+        </div>
+        <div class="form-group">
+<label>Email</label>
+            <input type="email"id="signupEmail"placeholder="Enter your email"required>
+        </div>
+        <div class="form-group">
+<label>Role</label>
+            <select id="signupRole">
+                <option value="Player">Player</option>
+                <option value="Coach">Coach</option>
+                <option value="Staff">Staff</option>
+            </select>
+         </div>
+         <div class="form-group">
+<label>Password</label>
+             <input type="password"id="signupPassword"placeholder="Create a password"required>
+         </div>
+         <div class="form-group">
+<label>Confirm Password</label>
+             <input type="password"id="signupConfirmPassword"placeholder="Confirm your password"required>
+         </div>
+             <button type="submit"class="auth-btn">Create Account</button>
+         </form>
+         </div></div>
+<aside class="sidebar">
+         <div class="brand">
+         <div class="icon">🏆</div>
+         <h2>Sports Tournament</h2>
+         <p>Management System</p>
+         </div>
+         <div class="menu-title">Main Menu</div>
+         <button class="active"onclick="showPage('dashboard', this)">📊 Dashboard</button>
+         <button onclick="showPage('tournaments', this)">🏆 Tournaments</button>
+         <button onclick="showPage('teams', this)">👥 Teams</button>
+         <button onclick="showPage('players', this)">🧑 Players</button>
+         <button onclick="showPage('schedule', this)">📅 Schedules</button>
+         <button onclick="showPage('matches', this)">⚽ Matches & Scores</button>
+         <button onclick="showPage('standings', this)">📈 Standings</button>
+         <button onclick="showPage('venues', this)">🏟️ Venues</button>
+         <div class="menu-title">System</div>
+         <button onclick="showPage('reports', this)">📄 Reports</button>
+         <button onclick="showPage('announcements', this)">🔔 Announcements</button>
+</aside>
+<main class="main">
+    <header class="topbar">
+         <h1 id="pageTitle">Dashboard</h1>
+        <div class="user profile-container">
+         <button class="profile-button"onclick="toggleProfileMenu(event)">
+         <div class="avatar"id="userAvatar">AD</div>
+         <div class="profile-info">
+         <strong id="currentUserName">Administrator</strong>
+         <small id="currentUserRole">System Admin</small>
+         </div>
+         <span class="profile-arrow">▼</span></button>
+         <div class="profile-menu"id="profileMenu">
+         <div class="profile-menu-header">
+         <div class="profile-avatar"id="profileAvatar">AD</div>
+         <div>
+         <strong id="profileName">Administrator</strong>
+         <small id="profileRole">System Admin</small>
+         </div>
+         </div>
+         <button onclick="showProfile()">👤 Profile Information</button>
+         <button onclick="showAccountSettings()">⚙️ Account Settings</button>
+         <button onclick="showSecurity()">🔒 Security</button>
+         <div class="profile-divider"></div>
+         <button class="profile-logout"onclick="logout()">🚪 Log Out</button>
+         </div></div>
+    </header>
+         <div class="content">
+         <section id="dashboard"class="page active">
+         <div class="page-header"><div>
+    <h2>Welcome, Administrator 👋</h2>
+    <p>Overview of your sports tournament management system.</p>
+         </div>
+         <button class="btn green"onclick="openModal('announcement')">+ New Announcement</button>
+         </div>
+         <div class="cards">
+         <div class="card">
+    <p>Active Tournaments</p>
+    <h2 id="totalTournaments">0</h2>
+         </div>
+         <div class="card">
+    <p>Registered Teams</p>
+    <h2 id="totalTeams">0</h2>
+         </div>
+         <div class="card">
+    <p>Total Players</p>
+    <h2 id="totalPlayers">0</h2>
+         </div>
+         <div class="card">
+    <p>Upcoming Matches</p>
+    <h2 id="totalMatches">0</h2>
+         </div>
+         </div>
+         <div class="dashboard-grid"><div>
+         <div class="box">
+         <div class="box-header">
+    <h3>Recent Match Results</h3>
+         <button class="btn green small"onclick="goToPage('matches')">View All</button>
+         </div>
+         <div class="box-body table-container">
+    <table>
+<thead>
+        <tr><th>Match</th><th>Score</th><th>Winner</th><th>Status</th></tr>
+</thead>
+         <tbody id="recentResults"></tbody>
+    </table>
+         </div></div>
+         <div class="box">
+         <div class="box-header">
+    <h3>Current Standings</h3>
+         <button class="btn green small"onclick="goToPage('standings')">View Standings</button>
+         </div>
+         <div class="box-body table-container">
+    <table>
+<thead>
+        <tr><th>Rank</th><th>Team</th><th>W</th><th>L</th><th>Points</th></tr>
+</thead>
+         <tbody id="dashboardStandings"></tbody>
+    </table>
+         </div></div></div><div>
+         <div class="box">
+         <div class="box-header">
+    <h3>Quick Actions</h3>
+         </div>
+         <div class="box-body">
+         <div class="quick-actions">
+         <button onclick="openModal('tournament')">🏆<br>
+    <strong>Add Tournament</strong>
+         </button>
+         <button onclick="openModal('team')">👥<br>
+    <strong>Add Team</strong>
+         </button>
+         <button onclick="openModal('player')">🧑<br>
+    <strong>Add Player</strong>
+         </button>
+         <button onclick="openModal('match')">⚽<br>
+         <strong>Record Match</strong>
+         </button>
+         </div></div></div>
+         <div class="box">
+         <div class="box-header">
+    <h3>Upcoming Games</h3>
+         </div>
+         <div class="box-body"id="upcomingGames"></div>
+         </div></div></div>
+</section>
+         <section id="tournaments"class="page">
+         <div class="page-header"><div>
+    <h2>Tournaments</h2>
+    <p>Create and manage sports tournaments.</p>
+         </div>
+         <button class="btn green"onclick="openModal('tournament')">+ Add Tournament</button>
+         </div>
+         <div class="box">
+         <div class="box-body">
+         <div class="toolbar">
+         <input id="tournamentSearch"class="search"placeholder="Search tournaments..."onkeyup="searchTable('tournamentSearch','tournamentTable')">
+         <button class="btn gray"onclick="clearSearch('tournamentSearch','tournamentTable')">Clear Search</button>
+         </div>
+         <div class="table-container">
+   <table>
+<thead>
+         <tr><th>Tournament</th><th>Sport</th><th>Date</th><th>Teams</th><th>Status</th><th>Actions</th></tr>
+</thead>
+         <tbody id="tournamentTable"></tbody>
+   </table>
+         </div></div></div>
+</section>
+         <section id="teams"class="page">
+         <div class="page-header"><div>
+    <h2>Teams</h2>
+    <p>Register and manage participating teams.</p>
+         </div>
+         <button class="btn green"onclick="openModal('team')">+ Add Team</button>
+         </div>
+         <div class="box">
+         <div class="box-body">
+         <div class="toolbar">
+         <input id="teamSearch"class="search"placeholder="Search teams..."onkeyup="searchTable('teamSearch','teamTable')">
+         <button class="btn gray"onclick="clearSearch('teamSearch','teamTable')">Clear Search</button>
+         </div>
+         <div class="table-container">
+    <table>
+<thead>
+         <tr><th>Team Name</th><th>Sport</th><th>Coach</th><th>Players</th><th>Actions</th></tr>
+</thead>
+         <tbody id="teamTable"></tbody>
+    </table>
+         </div></div></div>
+</section>
+         <section id="players"class="page">
+         <div class="page-header"><div>
+    <h2>Players</h2>
+    <p>Manage player profiles and team assignments.</p>
+         </div>
+         <button class="btn green"onclick="openModal('player')">+ Add Player</button>
+         </div>
+         <div class="box">
+         <div class="box-body">
+         <div class="toolbar">
+         <input id="playerSearch"class="search"placeholder="Search players..."onkeyup="searchTable('playerSearch','playerTable')">
+         <button class="btn gray"onclick="clearSearch('playerSearch','playerTable')">Clear Search</button>
+         </div>
+         <div class="table-container">
+    <table>
+<thead>
+         <tr><th>Player</th><th>Age</th><th>Position</th><th>Team</th><th>Actions</th></tr>
+</thead>
+         <tbody id="playerTable"></tbody>
+    </table>
+         </div></div></div>
+</section>
+         <section id="schedule"class="page">
+         <div class="page-header"><div>
+    <h2>Schedules</h2>
+    <p>Manage dates, times, venues and competing teams.</p>
+         </div>
+         <button class="btn green"onclick="openModal('schedule')">+ Add Schedule</button>
+         </div>
+         <div class="box">
+         <div class="box-body table-container">
+    <table>
+<thead>
+         <tr><th>Date</th><th>Time</th><th>Match</th><th>Venue</th><th>Status</th><th>Actions</th></tr>
+</thead>
+         <tbody id="scheduleTable"></tbody>
+    </table>
+         </div></div>
+</section>
+         <section id="matches"class="page">
+         <div class="page-header"><div>
+    <h2>Matches & Scores</h2>
+    <p>Record and update tournament match results.</p>
+         </div>
+         <button class="btn green"onclick="openModal('match')">+ Record Match</button>
+         </div>
+         <div class="box">
+         <div class="box-body table-container">
+    <table>
+<thead>
+         <tr><th>Home Team</th><th>Away Team</th><th>Date</th><th>Score</th><th>Winner</th><th>Actions</th></tr>
+</thead>
+         <tbody id="matchTable"></tbody>
+    </table>
+         </div></div>
+</section>
+         <section id="standings"class="page">
+         <div class="page-header"><div>
+    <h2>Standings & Rankings</h2>
+    <p>Automatically calculated team standings.</p>
+         </div>
+         <button class="btn green"onclick="updateStandings()">🔄 Update Standings</button>
+         </div>
+         <div class="box">
+         <div class="box-body table-container">
+    <table>
+<thead>
+         <tr><th>Rank</th><th>Team</th><th>Played</th><th>Wins</th><th>Losses</th><th>Points</th></tr>
+</thead>
+         <tbody id="standingsTable"></tbody>
+    </table>
+         </div></div>
+</section>
+         <section id="venues"class="page">
+         <div class="page-header"><div>
+    <h2>Venues</h2>
+    <p>Manage available sports venues.</p>
+         </div>
+         <button class="btn green"onclick="openModal('venue')">+ Add Venue</button>
+         </div>
+         <div class="box">
+         <div class="box-body table-container">
+    <table>
+<thead>
+         <tr><th>Venue</th><th>Location</th><th>Capacity</th><th>Status</th><th>Actions</th></tr>
+</thead>
+         <tbody id="venueTable"></tbody>
+    </table>
+         </div></div>
+</section>
+         <section id="reports"class="page">
+         <div class="page-header"><div>
+    <h2>Reports & Records</h2>
+    <p>Generate tournament records and summaries.</p>
+         </div>
+         <button class="btn blue"onclick="printReport()">🖨 Print Report</button>
+         </div>
+         <div class="cards">
+         <div class="card">
+    <p>Total Tournaments</p>
+    <h2 id="reportTournaments">0</h2>
+         </div>
+         <div class="card">
+    <p>Total Teams</p>
+    <h2 id="reportTeams">0</h2>
+         </div>
+         <div class="card">
+    <p>Total Players</p>
+    <h2 id="reportPlayers">0</h2>
+         </div>
+         <div class="card">
+    <p>Total Matches</p>
+    <h2 id="reportMatches">0</h2>
+         </div></div>
+         <div class="box">
+         <div class="box-header">
+    <h3>Available Reports</h3>
+         </div>
+         <div class="box-body">
+         <button class="btn green"onclick="generateReport('Team List')">Team List</button>
+         <button class="btn green"onclick="generateReport('Player List')">Player List</button>
+         <button class="btn green"onclick="generateReport('Match Results')">Match Results</button>
+         <button class="btn green"onclick="generateReport('Standings')">Tournament Standings</button>
+         <button class="btn green"onclick="generateReport('Schedule')">Game Schedule</button>
+         </div></div>
+</section>
+         <section id="announcements"class="page">
+         <div class="page-header"><div>
+    <h2>Announcements</h2>
+    <p>Notify users about tournament updates.</p>
+         </div>
+         <button class="btn green"onclick="openModal('announcement')">+ New Announcement</button>
+         </div>
+         <div class="box">
+         <div class="box-body"id="announcementList">
+         </div></div>
+</section>
+         </div>
+</main>
+         <div id="modal"class="modal">
+         <div class="modal-box">
+         <div class="modal-title">
+    <h2 id="modalTitle">Add Record</h2>
+         <button class="close"onclick="closeModal()">×</button>
+         </div>
+    <form id="recordForm"onsubmit="saveRecord(event)">
+         <div class="form-group">
+         <label>Name</label>
+         <input type="text"id="nameInput"placeholder="Enter name"required>
+         </div>
+         <div class="form-group">
+    <label>Category / Sport</label>
+<select id="categoryInput">
+         <option>Football</option>
+         <option>Basketball</option>
+         <option>Volleyball</option>
+         <option>Badminton</option>
+</select>
+         </div>
+         <div class="form-group">
+    <label>Additional Information</label>
+         <input type="text"id="detailsInput"placeholder="Enter details">
+         </div>
+         <div class="modal-actions">
+         <button type="button"class="btn gray" onclick="closeModal()">Cancel</button>
+         <button type="submit"class="btn green">Save</button>
+         </div>
+    </form>
+         </div>
+         </div>
+<script>
+const DEFAULT_USERS = [{
+    id: 1,
+    name: "Administrator",
+    email: "admin@sports.com",
+    password: "admin123",
+    role: "System Admin"
+}];
+function getUsers() {
+    try {
+        const users = JSON.parse(localStorage.getItem("sportsUsers"));
+        return Array.isArray(users) ? users : [...DEFAULT_USERS];
+    } catch (error) {
+        return [...DEFAULT_USERS];
+    }
+}
+if (!localStorage.getItem("sportsUsers")) {
+    localStorage.setItem("sportsUsers", JSON.stringify(DEFAULT_USERS));
+}
+function saveUsers(users) {
+    localStorage.setItem("sportsUsers", JSON.stringify(users));
+}
+const defaultDatabase = {
+    tournaments: [
+        { id: 1, name: "City Basketball Cup", sport: "Basketball", date: "2026-09-28", teams: 8, status: "Active" },
+        { id: 2, name: "Community Football League", sport: "Football", date: "2026-10-05", teams: 6, status: "Upcoming" }
+    ],
+    teams: [
+        { id: 1, name: "Falcons", sport: "Football", coach: "John Smith", players: 15 },
+        { id: 2, name: "Tigers", sport: "Football", coach: "Robert Cruz", players: 14 },
+        { id: 3, name: "Lions", sport: "Football", coach: "Mark Santos", players: 13 },
+        { id: 4, name: "Eagles", sport: "Football", coach: "David Garcia", players: 12 }
+    ],
+    players: [
+        { id: 1, name: "Michael Reyes", age: 21, position: "Forward", team: "Falcons" },
+        { id: 2, name: "James Garcia", age: 22, position: "Midfielder", team: "Tigers" },
+        { id: 3, name: "Daniel Cruz", age: 20, position: "Goalkeeper", team: "Lions" }
+    ],
+    matches: [
+        { id: 1, home: "Falcons", away: "Tigers", date: "Sept 26, 2026", score: "3 - 1", winner: "Falcons" },
+        { id: 2, home: "Lions", away: "Eagles", date: "Sept 27, 2026", score: "2 - 2", winner: "Draw" }
+    ],
+    schedules: [
+        { id: 1, date: "Sept 28, 2026", time: "4:00 PM", match: "Falcons vs Lions", venue: "City Sports Arena", status: "Scheduled" },
+        { id: 2, date: "Sept 29, 2026", time: "6:00 PM", match: "Tigers vs Eagles", venue: "Central Sports Hall", status: "Scheduled" }
+    ],
+    venues: [
+        { id: 1, name: "City Sports Arena", location: "Downtown", capacity: "5,000", status: "Available" },
+        { id: 2, name: "Central Sports Hall", location: "Central District", capacity: "3,000", status: "Reserved" }
+    ],
+    standings: [
+        { rank: 1, team: "Falcons", played: 7, wins: 6, losses: 1, points: 18 },
+        { rank: 2, team: "Tigers", played: 7, wins: 5, losses: 2, points: 15 },
+        { rank: 3, team: "Lions", played: 7, wins: 4, losses: 3, points: 12 },
+        { rank: 4, team: "Eagles", played: 7, wins: 3, losses: 4, points: 9 }
+    ],
+    announcements: [
+        { id: 1, title: "Basketball Finals Schedule Released", text: "The basketball finals schedule is now available." },
+        { id: 2, title: "Schedule Update", text: "Please check the updated match schedule." }
+    ]
+};
+let database = loadDatabase();
+let currentType = "";
+let editingId = null;
+
+function loadDatabase() {
+    try {
+        const saved = localStorage.getItem("sportsDatabase");
+        if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed === "object") {
+        return {
+            ...JSON.parse(JSON.stringify(defaultDatabase)),
+            ...parsed,
+            tournaments: Array.isArray(parsed.tournaments) ? parsed.tournaments : [],
+            teams: Array.isArray(parsed.teams) ? parsed.teams : [],
+            players: Array.isArray(parsed.players) ? parsed.players : [],
+            matches: Array.isArray(parsed.matches) ? parsed.matches : [],
+            schedules: Array.isArray(parsed.schedules) ? parsed.schedules : [],
+            venues: Array.isArray(parsed.venues) ? parsed.venues : [],
+            standings: Array.isArray(parsed.standings) ? parsed.standings : [],
+            announcements: Array.isArray(parsed.announcements) ? parsed.announcements : []
+    };
+}
+}
+    } catch (error) {
+        console.error("Could not load saved database:", error);
+    }
+    return JSON.parse(JSON.stringify(defaultDatabase));
+}
+function saveDatabase() {
+    try {
+        localStorage.setItem("sportsDatabase", JSON.stringify(database));
+    } catch (error) {
+        alert("Unable to save data. Browser storage may be full or unavailable.");
+        console.error("Could not save database:", error);
+    }
+}
+function showAuthForm(type) {
+    document.getElementById("loginForm").classList.toggle("active", type === "login");
+    document.getElementById("signupForm").classList.toggle("active", type === "signup");
+    document.getElementById("loginTab").classList.toggle("active", type === "login");
+    document.getElementById("signupTab").classList.toggle("active", type === "signup");
+}
+function login(event) {
+    event.preventDefault();
+    const email = document.getElementById("loginEmail").value.trim().toLowerCase();
+    const password = document.getElementById("loginPassword").value;
+    const user = getUsers().find(account =>
+        account.email.toLowerCase() === email && account.password === password
+    );
+    if (!user) {
+        alert("Invalid email or password.");
+        return;
+    }
+    localStorage.setItem("currentUser", JSON.stringify(user));
+    document.getElementById("authScreen").classList.add("hidden");
+    updateUserInterface(user);
+    document.getElementById("loginForm").reset();
+    alert("Welcome, " + user.name + "!");
+}
+function signup(event) {
+    event.preventDefault();
+    const name = document.getElementById("signupName").value.trim();
+    const email = document.getElementById("signupEmail").value.trim().toLowerCase();
+    const role = document.getElementById("signupRole").value;
+    const password = document.getElementById("signupPassword").value;
+    const confirmPassword = document.getElementById("signupConfirmPassword").value;
+    if (password !== confirmPassword) {
+        alert("Passwords do not match.");
+        return;
+    }
+    if (password.length < 6) {
+        alert("Password must be at least 6 characters.");
+        return;
+    }
+    const users = getUsers();
+    if (users.some(account => account.email.toLowerCase() === email)) {
+        alert("This email is already registered.");
+        return;
+    }
+    users.push({
+        id: Date.now(),
+        name,
+        email,
+        password,
+        role
+    });
+    saveUsers(users);
+    document.getElementById("signupForm").reset();
+    document.getElementById("loginEmail").value = email;
+    showAuthForm("login");
+    alert("Account created successfully! Please login.");
+}
+function toggleProfileMenu(event) {
+    event.stopPropagation();
+    document.getElementById("profileMenu").classList.toggle("show");
+}
+document.addEventListener("click", function(event) {
+    const profile = document.querySelector(".profile-container");
+    const menu = document.getElementById("profileMenu");
+
+    if (profile && !profile.contains(event.target)) {
+        menu.classList.remove("show");
+    }
+});
+function updateUserInterface(user) {
+    const initials = user.name.split(/\s+/)
+        .map(word => word.charAt(0))
+        .join("")
+        .substring(0, 2)
+        .toUpperCase();
+    document.getElementById("currentUserName").textContent = user.name;
+    document.getElementById("currentUserRole").textContent = user.role;
+    document.getElementById("userAvatar").textContent = initials;
+    document.getElementById("profileAvatar").textContent = initials;
+    document.getElementById("profileName").textContent = user.name;
+    document.getElementById("profileRole").textContent = user.role;
+    document.querySelector("#dashboard h2").textContent = "Welcome, " + user.name + " 👋";
+}
+function showProfile() {
+    document.getElementById("profileMenu").classList.remove("show");
+    const user = JSON.parse(localStorage.getItem("currentUser") || "null");
+    if (!user) return;
+    alert("Profile Information\n\nName: " + user.name +
+        "\nEmail: " + user.email + "\nRole: " + user.role);
+}
+function showAccountSettings() {
+    document.getElementById("profileMenu").classList.remove("show");
+    alert("Account Settings");
+}
+function showSecurity() {
+    document.getElementById("profileMenu").classList.remove("show");
+    alert("Security Settings");
+}
+function logout() {
+    if (!confirm("Are you sure you want to logout?")) return;
+    localStorage.removeItem("currentUser");
+    document.getElementById("profileMenu").classList.remove("show");
+    document.getElementById("authScreen").classList.remove("hidden");
+    document.getElementById("loginForm").reset();
+    showAuthForm("login");
+}
+function showPage(pageId, button) {
+    document.querySelectorAll(".page").forEach(page =>
+        page.classList.remove("active")
+    );
+    const page = document.getElementById(pageId);
+    if (page) page.classList.add("active");
+    document.querySelectorAll(".sidebar button").forEach(btn =>
+        btn.classList.remove("active")
+    );
+    if (button) button.classList.add("active");
+    const titles = {
+        dashboard: "Dashboard",
+        tournaments: "Tournaments",
+        teams: "Teams",
+        players: "Players",
+        schedule: "Schedules",
+        matches: "Matches & Scores",
+        standings: "Standings & Rankings",
+        venues: "Venues",
+        reports: "Reports & Records",
+        announcements: "Announcements"
+    };
+    document.getElementById("pageTitle").textContent = titles[pageId] || "Dashboard";
+}
+function goToPage(pageId) {
+    const buttons = document.querySelectorAll(".sidebar button");
+    let target = null;
+    buttons.forEach(button => {
+        const action = button.getAttribute("onclick") || "";
+        if (action.includes("'" + pageId + "'")) target = button;
+    });
+    showPage(pageId, target);
+}
+function renderTournaments() {
+    const table = document.getElementById("tournamentTable");
+    table.innerHTML = "";
+    database.tournaments.forEach(item => {
+        table.innerHTML += `
+    <tr>
+    <td>${escapeHTML(item.name)}</td>
+    <td>${escapeHTML(item.sport)}</td>
+    <td>${escapeHTML(item.date)}</td>
+    <td>${escapeHTML(item.teams)}</td>
+    <td><span class="badge badge-green">${escapeHTML(item.status)}</span></td>
+    <td><button class="btn blue small" onclick="editRecord('tournament',${item.id})">Edit</button>
+    <button class="btn red small" onclick="deleteRecord('tournament',${item.id})">Delete</button></td>
+    </tr>`;
+    });
+}
+function renderTeams() {
+    const table = document.getElementById("teamTable");
+    table.innerHTML = "";
+    database.teams.forEach(item => {
+        table.innerHTML += `
+    <tr>
+    <td>${escapeHTML(item.name)}</td>
+    <td>${escapeHTML(item.sport)}</td>
+    <td>${escapeHTML(item.coach)}</td>
+    <td>${escapeHTML(item.players)}</td>
+    <td><button class="btn blue small" onclick="editRecord('team',${item.id})">Edit</button>
+    <button class="btn red small" onclick="deleteRecord('team',${item.id})">Delete</button></td>
+    </tr>`;
+    });
+}
+function renderPlayers() {
+    const table = document.getElementById("playerTable");
+    table.innerHTML = "";
+    database.players.forEach(item => {
+        table.innerHTML += `
+    <tr>
+    <td>${escapeHTML(item.name)}</td>
+    <td>${escapeHTML(item.age)}</td>
+    <td>${escapeHTML(item.position)}</td>
+    <td>${escapeHTML(item.team)}</td>
+    <td><button class="btn blue small" onclick="editRecord('player',${item.id})">Edit</button>
+    <button class="btn red small" onclick="deleteRecord('player',${item.id})">Delete</button></td>
+    </tr>`;
+    });
+}
+function renderMatches() {
+    const table = document.getElementById("matchTable");
+    table.innerHTML = "";
+    database.matches.forEach(item => {
+        table.innerHTML += `
+    <tr>
+    <td>${escapeHTML(item.home)}</td>
+    <td>${escapeHTML(item.away)}</td>
+    <td>${escapeHTML(item.date)}</td>
+    <td><strong>${escapeHTML(item.score)}</strong></td>
+    <td>${escapeHTML(item.winner)}</td>
+    <td><button class="btn blue small" onclick="editRecord('match',${item.id})">Edit</button>
+    <button class="btn red small" onclick="deleteRecord('match',${item.id})">Delete</button></td>
+    </tr>`;
+    });
+}
+function renderSchedules() {
+    const table = document.getElementById("scheduleTable");
+    table.innerHTML = "";
+    database.schedules.forEach(item => {
+        table.innerHTML += `
+    <tr>
+    <td>${escapeHTML(item.date)}</td>
+    <td>${escapeHTML(item.time)}</td>
+    <td>${escapeHTML(item.match)}</td>
+    <td>${escapeHTML(item.venue)}</td>
+    <td><span class="badge badge-green">${escapeHTML(item.status)}</span></td>
+    <td><button class="btn blue small" onclick="editRecord('schedule',${item.id})">Edit</button>
+    <button class="btn red small" onclick="deleteRecord('schedule',${item.id})">Delete</button></td>
+    </tr>`;
+    });
+}
+function renderVenues() {
+    const table = document.getElementById("venueTable");
+    table.innerHTML = "";
+    database.venues.forEach(item => {
+        table.innerHTML += `
+    <tr>
+    <td>${escapeHTML(item.name)}</td>
+    <td>${escapeHTML(item.location)}</td>
+    <td>${escapeHTML(item.capacity)}</td>
+    <td><span class="badge badge-green">${escapeHTML(item.status)}</span></td>
+    <td><button class="btn blue small" onclick="editRecord('venue',${item.id})">Edit</button>
+    <button class="btn red small" onclick="deleteRecord('venue',${item.id})">Delete</button></td>
+    </tr>`;
+    });
+}
+function renderStandings() {
+    const table = document.getElementById("standingsTable");
+    table.innerHTML = "";
+    database.standings.forEach(item => {
+        table.innerHTML += `
+    <tr>
+    <td><strong>${escapeHTML(item.rank)}</strong></td>
+    <td>${escapeHTML(item.team)}</td>
+    <td>${escapeHTML(item.played)}</td>
+    <td>${escapeHTML(item.wins)}</td>
+    <td>${escapeHTML(item.losses)}</td>
+    <td><strong>${escapeHTML(item.points)}</strong></td>
+    </tr>`;
+    });
+}
+function renderAnnouncements() {
+    const list = document.getElementById("announcementList");
+    list.innerHTML = "";
+    database.announcements.forEach((item, index) => {
+        list.innerHTML += `
+    <div class="announcement">
+    <h4>📢 ${escapeHTML(item.title)}</h4>
+    <p>${escapeHTML(item.text)}</p>
+    <div style="margin-top:10px">
+    <button class="btn blue small" onclick="editAnnouncement(${index})">Edit</button>
+    <button class="btn red small" onclick="deleteAnnouncement(${index})">Delete</button>
+    </div></div>`;
+    });
+}
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[character]);
+}
+function renderDashboard() {
+    document.getElementById("totalTournaments").textContent = database.tournaments.length;
+    document.getElementById("totalTeams").textContent = database.teams.length;
+    document.getElementById("totalPlayers").textContent = database.players.length;
+    document.getElementById("totalMatches").textContent = database.matches.length;
+    document.getElementById("reportTournaments").textContent = database.tournaments.length;
+    document.getElementById("reportTeams").textContent = database.teams.length;
+    document.getElementById("reportPlayers").textContent = database.players.length;
+    document.getElementById("reportMatches").textContent = database.matches.length;
+    const results = document.getElementById("recentResults");
+    results.innerHTML = "";
+    database.matches.forEach(item => {
+        results.innerHTML += `
+    <tr>
+    <td>${escapeHTML(item.home)} vs ${escapeHTML(item.away)}</td>
+    <td>${escapeHTML(item.score)}</td>
+    <td>${escapeHTML(item.winner)}</td>
+    <td><span class="badge badge-green">Completed</span></td>
+    </tr>`;
+    });
+    const standings = document.getElementById("dashboardStandings");
+    standings.innerHTML = "";
+    database.standings.forEach(item => {
+        standings.innerHTML += `
+    <tr>
+    <td>${escapeHTML(item.rank)}</td>
+    <td>${escapeHTML(item.team)}</td>
+    <td>${escapeHTML(item.wins)}</td>
+    <td>${escapeHTML(item.losses)}</td>
+    <td>${escapeHTML(item.points)}</td>
+    </tr>`;
+    });
+    const games = document.getElementById("upcomingGames");
+    games.innerHTML = "";
+    database.schedules.forEach(item => {
+        games.innerHTML += `
+    <div class="announcement">
+    <h4>${escapeHTML(item.match)}</h4>
+    <p>📅 ${escapeHTML(item.date)} · ${escapeHTML(item.time)}</p>
+    <p>🏟️ ${escapeHTML(item.venue)}</p>
+    </div>`;
+    });
+}
+function openModal(type) {
+    currentType = type;
+    editingId = null;
+    const titles = {
+        tournament: "Add Tournament",
+        team: "Add Team",
+        player: "Add Player",
+        match: "Record Match",
+        schedule: "Add Schedule",
+        venue: "Add Venue",
+        announcement: "New Announcement"
+    };
+    document.getElementById("modalTitle").textContent = titles[type] || "Add Record";
+    document.getElementById("recordForm").reset();
+    document.getElementById("modal").classList.add("show");
+}
+function closeModal() {
+    document.getElementById("modal").classList.remove("show");
+    currentType = "";
+    editingId = null;
+}
+function saveRecord(event) {
+    event.preventDefault();
+    const name = document.getElementById("nameInput").value.trim();
+    const category = document.getElementById("categoryInput").value;
+    const details = document.getElementById("detailsInput").value.trim();
+    if (!name) {
+        alert("Please enter a name.");
+        return;
+    }
+    const id = Date.now();
+    if (currentType === "tournament") {
+        database.tournaments.push({
+            id, name, sport: category, date: "TBA", teams: 0, status: "Upcoming"
+        });
+    } else if (currentType === "team") {
+        database.teams.push({
+            id, name, sport: category, coach: details || "TBA", players: 0
+        });
+    } else if (currentType === "player") {
+        database.players.push({
+            id, name, age: 18, position: details || "TBA", team: "Unassigned"
+        });
+    } else if (currentType === "match") {
+        database.matches.push({
+            id, home: name, away: "TBA", date: "TBA", score: "0 - 0", winner: "Pending"
+        });
+    } else if (currentType === "schedule") {
+        database.schedules.push({
+            id, date: "TBA", time: "TBA", match: name, venue: details || "TBA", status: "Scheduled"
+        });
+    } else if (currentType === "venue") {
+        database.venues.push({
+            id, name, location: details || "TBA", capacity: "TBA", status: "Available"
+        });
+    } else if (currentType === "announcement") {
+        database.announcements.push({
+            id, title: name, text: details || "New tournament announcement."
+        });
+    } else {
+        return;
+    }
+    renderAll();
+    closeModal();
+    alert(name + " added successfully!");
+}
+function getCollection(type) {
+    const collections = {
+        tournament: database.tournaments,
+        team: database.teams,
+        player: database.players,
+        match: database.matches,
+        schedule: database.schedules,
+        venue: database.venues
+    };
+    return collections[type] || null;
+}
+function editRecord(type, id) {
+    const collection = getCollection(type);
+    if (!collection) return;
+    const record = collection.find(item => item.id === id);
+    if (!record) return;
+    const oldName = record.name || record.home || record.match || "";
+    const newName = prompt("Enter new name:", oldName);
+    if (newName === null || !newName.trim()) return;
+    if (type === "match") {
+        record.home = newName.trim();
+    } else if (type === "schedule") {
+        record.match = newName.trim();
+    } else {
+        record.name = newName.trim();
+    }
+    renderAll();
+    alert("Record updated successfully!");
+}
+function deleteRecord(type, id) {
+    const collection = getCollection(type);
+    if (!collection) return;
+    const record = collection.find(item => item.id === id);
+    if (!record) return;
+    const name = record.name || record.home || record.match || "this record";
+    if (!confirm("Delete " + name + "?")) return;
+    const index = collection.findIndex(item => item.id === id);
+    if (index !== -1) collection.splice(index, 1);
+    renderAll();
+    alert("Record deleted successfully!");
+}
+function editAnnouncement(index) {
+    const item = database.announcements[index];
+    if (!item) return;
+    const title = prompt("Enter announcement title:", item.title);
+    if (title === null || !title.trim()) return;
+    const text = prompt("Enter announcement details:", item.text);
+    if (text === null) return;
+    item.title = title.trim();
+    item.text = text.trim();
+    renderAll();
+    alert("Announcement updated successfully!");
+}
+function deleteAnnouncement(index) {
+    const item = database.announcements[index];
+    if (!item) return;
+    if (!confirm("Delete announcement: " + item.title + "?")) return;
+    database.announcements.splice(index, 1);
+    renderAll();
+    alert("Announcement deleted successfully!");
+}
+function searchTable(inputId, tableId) {
+    const filter = document.getElementById(inputId).value.toLowerCase();
+    const rows = document.getElementById(tableId).getElementsByTagName("tr");
+
+    for (let i = 0; i < rows.length; i++) {
+        rows[i].style.display =
+            rows[i].textContent.toLowerCase().includes(filter) ? "" : "none";
+    }
+}
+function clearSearch(inputId, tableId) {
+    document.getElementById(inputId).value = "";
+    searchTable(inputId, tableId);
+}
+function updateStandings() {
+    database.standings.sort((a, b) => b.points - a.points);
+    database.standings.forEach((item, index) => {
+        item.rank = index + 1;
+    });
+    renderAll();
+    alert("Standings updated successfully!");
+}
+function generateReport(type) {
+    let content = "";
+    if (type === "Team List") {
+        content = database.teams.map(team =>
+            team.name + " - " + team.sport
+        ).join("\n");
+    } else if (type === "Player List") {
+        content = database.players.map(player =>
+            player.name + " - " + player.team
+        ).join("\n");
+    } else if (type === "Match Results") {
+        content = database.matches.map(match =>
+            match.home + " vs " + match.away + " | " + match.score + " | Winner: " + match.winner
+        ).join("\n");
+    } else if (type === "Standings") {
+        content = database.standings.map(item =>
+            item.rank + ". " + item.team + " - " + item.points + " points"
+        ).join("\n");
+    } else if (type === "Schedule") {
+        content = database.schedules.map(item =>
+            item.date + " | " + item.time + " | " + item.match + " | " + item.venue
+        ).join("\n");
+    }
+    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = type.toLowerCase().replace(/\s+/g, "-") + ".txt";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+}
+function printReport() {
+    window.print();
+}
+function renderAll() {
+    renderTournaments();
+    renderTeams();
+    renderPlayers();
+    renderMatches();
+    renderSchedules();
+    renderVenues();
+    renderStandings();
+    renderAnnouncements();
+    renderDashboard();
+    saveDatabase();
+}
+function checkLogin() {
+    let user = null;
+    try {
+        user = JSON.parse(localStorage.getItem("currentUser") || "null");
+    } catch (error) {
+        user = null;
+    }
+    if (user) {
+        document.getElementById("authScreen").classList.add("hidden");
+        updateUserInterface(user);
+    } else {
+        document.getElementById("authScreen").classList.remove("hidden");
+    }
+}
+document.getElementById("modal").addEventListener("click", function(event) {
+    if (event.target === this) closeModal();
+});
+renderAll();
+checkLogin();
+
+</script>
+</body>
+</html>
